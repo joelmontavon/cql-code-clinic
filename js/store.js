@@ -16,8 +16,8 @@ Any text enclosed within is ignored
     name: 'test.cql',
     template: 'This is a comment',
     key: '// This is a comment',
-    eval: function (attempt) {
-      return attempt.code.search(new RegExp(/\/\*[\s\S]*?\*\/|([^\\:]|^)\/\/.*$/gm)) > -1;
+    eval: function (answers, key) {
+      return answers.code.search(new RegExp(/\/\*[\s\S]*?\*\/|([^\\:]|^)\/\/.*$/gm)) > -1 && answers.status == 'success';
     }
   }]
 },{

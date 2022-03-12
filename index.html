@@ -26,9 +26,19 @@
                 </el-col>
               </el-row>
               <el-drawer v-model="drawer" title="Bookmarks" :with-header="false">
-                <el-steps :active="index" direction="vertical" :space="200" align-center>
+                <!--<el-steps :active="index" direction="vertical" :space="200" align-center>
                   <el-step v-for="exercise in exercises" :title="exercise.name" :description="exercise.description"></el-step>
-                </el-steps>
+                </el-steps>-->
+                <el-timeline>
+                  <el-timeline-item v-for="(exercise, index) in exercises" :key="index" @click="goTo(index)" placement="top" center>
+                    <h3>{{exercise.name}}</h3>
+                    <p>{{exercise.description}}</p>
+                    <!--<el-card>
+                      <h3>{{exercise.name}}</h3>
+                      <p>{{exercise.description}}</p>
+                    </el-card>-->
+                  </el-timeline-item>
+                </el-timeline>
               </el-drawer>
             </el-header>
             <el-container>

@@ -9,6 +9,10 @@ const App = {
       }
     },
     methods: {
+      goTo(index) {
+        this.index = index;
+        this.drawer = false;
+      },
       pageForward() {
         this.index = Math.min(this.index + 1, this.exercises.length - 1)
       },
@@ -57,6 +61,7 @@ const App = {
               confirmButtonText: 'OK',
               cancelButtonText: 'Cancel',
               callback: function () {
+                self.log = '';
                 self.pageForward();
               }
             });

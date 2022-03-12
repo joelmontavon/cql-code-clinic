@@ -3,7 +3,7 @@ InstructAble = {
   <el-card>
     <template #header>
       <div class="card-header">
-        <span>Exercise</span>
+        <span>{{exercise.name}}</span>
       </div>
     </template>
     <div v-html="content">
