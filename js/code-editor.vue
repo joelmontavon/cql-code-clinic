@@ -72,6 +72,7 @@ const CodeEditor = {
     },
     reset() {
       this.editor.setValue(this.exercise.tabs[0].template);
+      this.editor.clearSelection();
       return this.onReset()
     },
     cheat() {

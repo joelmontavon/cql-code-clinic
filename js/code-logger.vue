@@ -39,6 +39,7 @@ const CodeLogger = {
   watch: {
     text(newText, oldText) {
       this.editor.setValue(newText);
+      this.editor.clearSelection();
     }
   },
   methods: {

@@ -27,7 +27,7 @@ Any text enclosed within is ignored
 <p>The following table lists some of operator in CQL:</p>
 <table>
 <tbody>
-<th><td>Category</td><td>Operators</td></th>
+<tr><th>Category</th><th>Operators</th></trs>
 <tr><td>Exponentiation</td><td>^</td></tr>
 <tr><td>Multiplicative</td><td>* / div mod</td></tr>
 <tr><td>Additive</td><td>+ - &</td></tr>
@@ -77,8 +77,8 @@ define "String Concatenation":
     template: `Define "Quantity Expression":
   5 'g/dL'
 
-  define "Reference Expression":
-    "quantity expression"`,
+define "Reference Expression":
+  "quantity expression"`,
     key: `define "Quantity Expression": // Identifiers are case-sensitive
   5 'g/dL'
 

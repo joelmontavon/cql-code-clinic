@@ -8,7 +8,6 @@
   		<script src="https://unpkg.com/vue@next"></script>
   		<script src="https://unpkg.com/element-plus"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.27.0/prism.min.js"></script>
-      <script src="https://unpkg.com/codeflask/build/codeflask.min.js"></script>
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.14/ace.js"></script>
       <link rel="stylesheet" href="style/style.css" />
@@ -18,11 +17,13 @@
           <el-container>
             <el-header>
               <el-row>
-                <el-col :span="4"><span style="font-size:32px;">CQL Code Clinic</span></el-col>
+                <el-col :span="4"><img src="img/pills_no_green.png" style="height: 40px; width: 40px;"></img><span style="font-size:32px;">CQL Code Clinic</span></el-col>
                 <el-col :span="16" style="text-align: center;">
-                  <el-button type="primary" @click="pageBack" plain><i class="fa-solid fa-left-long" style="font-size: 16px;"></i></el-button>
-                  <el-button type="primary" @click="drawer = true"><i class="fa-solid fa-bars" style="font-size: 16px;"></i><pre style="font-size: 16px;">  Bookmarks</pre></el-button>
-                  <el-button type="primary" @click="pageForward" plain><i class="fa-solid fa-right-long" style="font-size: 16px;"></i></el-button>
+                  <el-button-group>
+                    <el-button type="primary" @click="pageBack" plain><i class="fa-solid fa-left-long" style="font-size: 16px;"></i></el-button>
+                    <el-button type="primary" @click="drawer = true"><i class="fa-solid fa-bars" style="font-size: 16px;"></i><span style="font-size: 16px;">&nbsp&nbspBookmarks</span></el-button>
+                    <el-button type="primary" @click="pageForward" plain><i class="fa-solid fa-right-long" style="font-size: 16px;"></i></el-button>
+                  </el-button-group>
                 </el-col>
               </el-row>
               <el-drawer v-model="drawer" title="Bookmarks" :with-header="false">
@@ -30,9 +31,9 @@
                   <el-step v-for="exercise in exercises" :title="exercise.name" :description="exercise.description"></el-step>
                 </el-steps>-->
                 <el-timeline>
-                  <el-timeline-item v-for="(exercise, index) in exercises" :key="index" @click="goTo(index)" placement="top" center>
-                    <h3>{{exercise.name}}</h3>
-                    <p>{{exercise.description}}</p>
+                  <el-timeline-item v-for="(exercise, i) in exercises" :key="i" :type="i == index ? 'primary' : (i < index ? 'success' : '')" @click="goTo(i)" placement="top" center>
+                    <h3><a h-ref="">{{exercise.name}}</a></h3>
+                    <p><a h-ref="">{{exercise.description}}</a></p>
                     <!--<el-card>
                       <h3>{{exercise.name}}</h3>
                       <p>{{exercise.description}}</p>
