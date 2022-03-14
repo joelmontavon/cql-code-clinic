@@ -3,11 +3,13 @@
     <head>
       <meta charset="UTF-8" />
       <title>CQL Code Clinic</title>
-  		<link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css" />
+  		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/element-plus/2.0.6/index.min.css" />
       <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.27.0/themes/prism-okaidia.min.css" />-->
   		<script src="https://unpkg.com/vue@next"></script>
-  		<script src="https://unpkg.com/element-plus"></script>
+  		<script src="https://cdnjs.cloudflare.com/ajax/libs/element-plus/2.0.6/index.full.js"></script>
+      <script src="https://unpkg.com/@element-plus/icons-vue"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.27.0/prism.min.js"></script>
+      <script src="https://unpkg.com/codeflask/build/codeflask.min.js"></script>
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.14/ace.js"></script>
       <link rel="stylesheet" href="style/style.css" />
@@ -31,9 +33,9 @@
                   <el-step v-for="exercise in exercises" :title="exercise.name" :description="exercise.description"></el-step>
                 </el-steps>-->
                 <el-timeline>
-                  <el-timeline-item v-for="(exercise, i) in exercises" :key="i" :type="i == index ? 'primary' : (i < index ? 'success' : '')" @click="goTo(i)" placement="top" center>
-                    <h3><a h-ref="">{{exercise.name}}</a></h3>
-                    <p><a h-ref="">{{exercise.description}}</a></p>
+                  <el-timeline-item v-for="(exercise, i) in exercises" :key="i" :type="i == index ? 'info' : (i < index ? 'success' : 'default')" :hollow="true" @click="goTo(i)" placement="top" center>
+                    <h3><el-link class="h3">{{exercise.name}}</el-link></h3>
+                    <p>{{exercise.description}}</p>
                     <!--<el-card>
                       <h3>{{exercise.name}}</h3>
                       <p>{{exercise.description}}</p>
