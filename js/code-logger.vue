@@ -3,7 +3,7 @@ const CodeLogger = {
   <el-card>
     <template #header>
       <div class="card-header">
-        <span>Log</span>
+        <span class="h3">Log</span>
         <i v-show="status=='error'"class="fa-solid fa-circle-exclamation" style="color: rgb(245, 108, 108);"></i>
         <i v-show="status=='success'" class="fa-solid fa-circle-check" style="color: rgb(103, 194, 58);"></i>
         <el-button type="info" @click="clear">Clear</el-button>

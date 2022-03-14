@@ -3,7 +3,7 @@ const CodeEditor = {
   <el-card>
     <template #header>
       <div class="card-header">
-        <span>Code Editor</span>
+        <span class="h3">Code Editor</span>
         <div style="align-items: end;">
           <el-button type="primary" @click="reset" plain><i class="fa-solid fa-rotate-left" style="font-size: 16px;"></i></el-button>
           <el-button type="primary" @click="cheat" plain><i class="fa-solid fa-key" style="font-size: 16px;"></i></el-button>
