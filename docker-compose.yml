@@ -1,0 +1,205 @@
+version: '3.8'
+
+services:
+  # Frontend Application
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      target: production
+    container_name: cql-clinic-frontend
+    ports:
+      - "${FRONTEND_PORT:-3000}:3000"
+    environment:
+      - NODE_ENV=production
+      - VITE_API_URL=http://backend:3001/api
+      - VITE_WS_URL=ws://backend:3001
+      - VITE_APP_NAME=CQL Code Clinic
+      - VITE_APP_VERSION=${APP_VERSION:-1.0.0}
+    depends_on:
+      - backend
+    restart: unless-stopped
+    networks:
+      - cql-network
+    volumes:
+      - frontend-assets:/app/dist
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.frontend.rule=Host(`${FRONTEND_DOMAIN:-localhost}`)"
+      - "traefik.http.routers.frontend.tls=true"
+      - "traefik.http.routers.frontend.tls.certresolver=letsencrypt"
+      - "traefik.http.services.frontend.loadbalancer.server.port=3000"
+
+  # Backend API
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      target: production
+    container_name: cql-clinic-backend
+    ports:
+      - "${BACKEND_PORT:-3001}:3001"
+    environment:
+      - NODE_ENV=production
+      - PORT=3001
+      - DATABASE_URL=${DATABASE_URL:-postgresql://cql_user:cql_password@postgres:5432/cql_clinic}
+      - REDIS_URL=${REDIS_URL:-redis://redis:6379}
+      - JWT_SECRET=${JWT_SECRET}
+      - SESSION_SECRET=${SESSION_SECRET}
+      - CQL_RUNNER_URL=http://cql-runner:8080
+      - CORS_ORIGIN=${FRONTEND_DOMAIN:-http://localhost:3000}
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+      - ENABLE_METRICS=true
+      - SECURITY_ALERTS_ENABLED=true
+    depends_on:
+      - postgres
+      - redis
+      - cql-runner
+    restart: unless-stopped
+    networks:
+      - cql-network
+    volumes:
+      - backend-uploads:/app/uploads
+      - backend-logs:/app/logs
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.backend.rule=Host(`${API_DOMAIN:-api.localhost}`) || PathPrefix(`/api`)"
+      - "traefik.http.routers.backend.tls=true"
+      - "traefik.http.routers.backend.tls.certresolver=letsencrypt"
+      - "traefik.http.services.backend.loadbalancer.server.port=3001"
+
+  # CQL Runner Service
+  cql-runner:
+    build:
+      context: ./cql-runner
+      dockerfile: Dockerfile
+    container_name: cql-clinic-runner
+    ports:
+      - "${CQL_RUNNER_PORT:-8080}:8080"
+    environment:
+      - JAVA_OPTS=-Xmx2g -Xms512m
+      - CQL_RUNNER_THREADS=${CQL_RUNNER_THREADS:-4}
+      - CQL_TIMEOUT=${CQL_TIMEOUT:-30000}
+    restart: unless-stopped
+    networks:
+      - cql-network
+    volumes:
+      - cql-cache:/app/cache
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: cql-clinic-db
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB:-cql_clinic}
+      - POSTGRES_USER=${POSTGRES_USER:-cql_user}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-cql_password}
+      - POSTGRES_INITDB_ARGS=--encoding=UTF-8 --lc-collate=C --lc-ctype=C
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./database/init:/docker-entrypoint-initdb.d
+      - ./database/backups:/backups
+    restart: unless-stopped
+    networks:
+      - cql-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-cql_user} -d ${POSTGRES_DB:-cql_clinic}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    command: >
+      postgres
+      -c shared_preload_libraries=pg_stat_statements
+      -c pg_stat_statements.track=all
+      -c max_connections=100
+      -c shared_buffers=256MB
+      -c effective_cache_size=1GB
+      -c work_mem=4MB
+      -c maintenance_work_mem=64MB
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: cql-clinic-redis
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+    volumes:
+      - redis-data:/data
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
+    restart: unless-stopped
+    networks:
+      - cql-network
+    command: redis-server ${REDIS_PASSWORD:+--requirepass $REDIS_PASSWORD}
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  # Traefik Reverse Proxy
+  traefik:
+    image: traefik:v3.0
+    container_name: cql-clinic-traefik
+    command:
+      - "--api.dashboard=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.letsencrypt.acme.tlschallenge=true"
+      - "--certificatesresolvers.letsencrypt.acme.email=${ACME_EMAIL}"
+      - "--certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json"
+      - "--log.level=${TRAEFIK_LOG_LEVEL:-INFO}"
+      - "--accesslog=true"
+      - "--metrics.prometheus=true"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"  # Traefik dashboard
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - traefik-letsencrypt:/letsencrypt
+    restart: unless-stopped
+    networks:
+      - cql-network
+    profiles:
+      - traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.dashboard.rule=Host(`traefik.${DOMAIN:-localhost}`)"
+      - "traefik.http.routers.dashboard.tls=true"
+      - "traefik.http.routers.dashboard.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.dashboard.service=api@internal"
+
+volumes:
+  postgres-data:
+    driver: local
+  redis-data:
+    driver: local
+  cql-cache:
+    driver: local
+  frontend-assets:
+    driver: local
+  backend-uploads:
+    driver: local
+  backend-logs:
+    driver: local
+  traefik-letsencrypt:
+    driver: local
+
+networks:
+  cql-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16

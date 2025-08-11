@@ -1,0 +1,27 @@
+{
+  "name": "cql-services",
+  "version": "1.0.0",
+  "description": "Local CQL execution services for CQL Code Clinic",
+  "main": "mock-cql-service.js",
+  "scripts": {
+    "start": "node mock-cql-service.js",
+    "dev": "nodemon mock-cql-service.js",
+    "mock": "node mock-cql-service.js",
+    "test": "curl -X POST http://localhost:8080/cql/evaluate -H 'Content-Type: application/json' -d '{\"code\": \"define \\\"Test\\\": 1 + 1\"}'"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "keywords": [
+    "cql",
+    "clinical-quality-language",
+    "mock",
+    "development"
+  ],
+  "author": "CQL Code Clinic Team",
+  "license": "MIT"
+}

@@ -1,0 +1,32 @@
+{
+  "name": "@cql-clinic/shared",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Shared types and utilities for CQL Code Clinic",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf dist",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "ajv": "^8.12.0",
+    "ajv-formats": "^2.1.1"
+  },
+  "devDependencies": {
+    "typescript": "^5.2.2"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./types": {
+      "import": "./dist/types/index.js", 
+      "require": "./dist/types/index.js",
+      "types": "./dist/types/index.d.ts"
+    }
+  }
+}

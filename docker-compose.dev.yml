@@ -1,0 +1,131 @@
+version: '3.8'
+
+services:
+  # Frontend - React Application
+  frontend:
+    build: 
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - VITE_API_BASE_URL=http://localhost:3001/api
+      - VITE_CQL_EXECUTION_SERVICE_URL=http://localhost:8080
+    depends_on:
+      - backend
+      - cql-mock-service
+    networks:
+      - cql-network
+
+  # Backend API - Express.js (when created)
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - CQL_EXECUTION_SERVICE_URL=http://cql-mock-service:8080
+      - DATABASE_URL=postgresql://postgres:password@postgres:5432/cql_clinic_dev
+    depends_on:
+      - postgres
+      - cql-mock-service
+    networks:
+      - cql-network
+
+  # Mock CQL Execution Service (temporary)
+  cql-mock-service:
+    build:
+      context: ./services
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./services:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - PORT=8080
+    networks:
+      - cql-network
+
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=cql_clinic_dev
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backend/database/init:/docker-entrypoint-initdb.d
+    networks:
+      - cql-network
+
+  # Redis (for caching and sessions)
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - cql-network
+
+  # CQL Runner (DBCG Angular UI) - Optional development tool
+  cql-runner-ui:
+    build:
+      context: ./services/cql_runner
+      dockerfile: Dockerfile
+    ports:
+      - "4200:4200"
+    volumes:
+      - ./services/cql_runner:/app
+      - /app/node_modules
+    environment:
+      - NG_CLI_ANALYTICS=false
+    depends_on:
+      - cql-mock-service
+    networks:
+      - cql-network
+    profiles:
+      - tools # Only start when explicitly requested
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  cql-network:
+    driver: bridge
+
+# Usage Examples:
+#
+# Start all core services:
+#   docker-compose -f docker-compose.dev.yml up -d
+#
+# Start with CQL Runner UI tool:
+#   docker-compose -f docker-compose.dev.yml --profile tools up -d
+#
+# View logs:
+#   docker-compose -f docker-compose.dev.yml logs -f frontend
+#   docker-compose -f docker-compose.dev.yml logs -f cql-mock-service
+#
+# Rebuild services:
+#   docker-compose -f docker-compose.dev.yml build --no-cache
+#
+# Stop all services:
+#   docker-compose -f docker-compose.dev.yml down
+#
+# Reset database:
+#   docker-compose -f docker-compose.dev.yml down -v
+#   docker-compose -f docker-compose.dev.yml up -d postgres

@@ -1,0 +1,455 @@
+/* Progress Tracker Component Styles */
+
+.progress-tracker {
+  --primary-color: #667eea;
+  --success-color: #28a745;
+  --warning-color: #ffc107;
+  --info-color: #17a2b8;
+  --border-radius: 0.5rem;
+  --box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Skill Level Card */
+.skill-level-card {
+  background: linear-gradient(135deg, var(--primary-color), #764ba2);
+  color: white;
+  border: none;
+  box-shadow: var(--box-shadow);
+}
+
+.skill-level-card .text-muted {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.skill-level-badge {
+  position: relative;
+}
+
+.level-circle {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.level-number {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+/* Stat Cards */
+.stat-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: none;
+  box-shadow: var(--box-shadow);
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.stat-card .card-body {
+  padding: 1.5rem;
+}
+
+.stat-card h4 {
+  font-weight: 600;
+  margin: 0.5rem 0;
+}
+
+/* Progress Summary */
+.progress-summary {
+  padding: 0.5rem 0;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.stat-item {
+  text-align: center;
+  padding: 0.5rem;
+}
+
+.stat-value {
+  display: block;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+.stat-label {
+  display: block;
+  font-size: 0.75rem;
+  color: #6c757d;
+  margin-top: 0.25rem;
+}
+
+/* Learning Streak */
+.streak-stat {
+  text-align: center;
+  padding: 1rem;
+}
+
+.streak-number {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  display: block;
+}
+
+.streak-label {
+  font-size: 0.875rem;
+  color: #6c757d;
+  margin-top: 0.25rem;
+}
+
+/* Weekly Activity */
+.weekly-activity {
+  border-top: 1px solid #dee2e6;
+  padding-top: 1rem;
+}
+
+.activity-bars {
+  display: flex;
+  justify-content: space-around;
+  align-items: end;
+  height: 60px;
+  margin-top: 1rem;
+}
+
+.activity-day {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.activity-bar {
+  width: 12px;
+  background: var(--primary-color);
+  border-radius: 2px;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+
+.activity-bar:hover {
+  opacity: 1;
+}
+
+.activity-day small {
+  font-size: 0.7rem;
+  color: #6c757d;
+}
+
+/* Achievement Cards */
+.achievement-card {
+  border: none;
+  box-shadow: var(--box-shadow);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  overflow: hidden;
+  position: relative;
+}
+
+.achievement-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary-color), #764ba2);
+}
+
+.achievement-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.achievement-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  border: 3px solid var(--primary-color);
+}
+
+.achievement-emoji {
+  font-size: 1.5rem;
+}
+
+.achievement-name {
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 0.5rem;
+}
+
+.achievement-description {
+  line-height: 1.4;
+  margin-bottom: 1rem;
+}
+
+.achievement-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Compact Progress View */
+.compact-progress {
+  border: none;
+  box-shadow: var(--box-shadow);
+}
+
+.compact-progress .card-body {
+  padding: 1rem;
+}
+
+.compact-progress .progress {
+  height: 6px;
+}
+
+/* List Group Items */
+.list-group-item {
+  border-left: none;
+  border-right: none;
+  border-top: none;
+}
+
+.list-group-item:first-child {
+  border-top: none;
+}
+
+.list-group-item:last-child {
+  border-bottom: none;
+}
+
+/* Progress Bars */
+.progress {
+  height: 8px;
+  border-radius: 4px;
+  background-color: #f8f9fa;
+  overflow: hidden;
+}
+
+.progress-bar {
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+/* Tab Navigation */
+.nav-tabs {
+  border-bottom: 2px solid #dee2e6;
+  margin-bottom: 1.5rem;
+}
+
+.nav-tabs .nav-link {
+  border: none;
+  color: #6c757d;
+  font-weight: 500;
+  padding: 0.75rem 1.25rem;
+  border-radius: var(--border-radius) var(--border-radius) 0 0;
+  transition: all 0.2s ease;
+}
+
+.nav-tabs .nav-link:hover {
+  color: var(--primary-color);
+  border-color: transparent;
+  background-color: #f8f9fa;
+}
+
+.nav-tabs .nav-link.active {
+  color: var(--primary-color);
+  background-color: white;
+  border-color: var(--primary-color) var(--primary-color) white;
+  border-width: 0 0 2px 0;
+  border-style: solid;
+}
+
+/* Cards */
+.card {
+  border: none;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  margin-bottom: 1rem;
+}
+
+.card-header {
+  background: #f8f9fa;
+  border-bottom: 1px solid #dee2e6;
+  border-radius: var(--border-radius) var(--border-radius) 0 0 !important;
+  padding: 0.75rem 1rem;
+}
+
+.card-header h6 {
+  margin: 0;
+  font-weight: 600;
+  color: #495057;
+}
+
+.card-body {
+  padding: 1rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+  
+  .streak-stat {
+    padding: 0.5rem;
+  }
+  
+  .streak-number {
+    font-size: 1.5rem;
+  }
+  
+  .activity-bars {
+    height: 40px;
+  }
+  
+  .activity-bar {
+    width: 8px;
+  }
+  
+  .level-circle {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .level-number {
+    font-size: 1.25rem;
+  }
+  
+  .achievement-icon {
+    width: 50px;
+    height: 50px;
+  }
+}
+
+@media (max-width: 576px) {
+  .progress-tracker {
+    padding: 0.5rem;
+  }
+  
+  .skill-level-card .card-body {
+    padding: 1rem;
+  }
+  
+  .stat-card .card-body {
+    padding: 1rem;
+  }
+  
+  .nav-tabs .nav-link {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+  }
+}
+
+/* Animation Classes */
+.fade-in {
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.slide-up {
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Loading States */
+.loading-skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Dark Theme Support */
+@media (prefers-color-scheme: dark) {
+  .progress-tracker {
+    --primary-color: #748ffc;
+    --border-radius: 0.5rem;
+    --box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+  
+  .card {
+    background-color: #2d3748;
+    color: white;
+  }
+  
+  .card-header {
+    background-color: #4a5568;
+    border-color: #2d3748;
+  }
+  
+  .text-muted {
+    color: #a0aec0 !important;
+  }
+  
+  .skill-level-card .text-muted {
+    color: rgba(255, 255, 255, 0.8) !important;
+  }
+  
+  .progress {
+    background-color: #4a5568;
+  }
+  
+  .nav-tabs {
+    border-color: #4a5568;
+  }
+  
+  .nav-tabs .nav-link:hover {
+    background-color: #4a5568;
+  }
+  
+  .list-group-item {
+    background-color: transparent;
+    border-color: #4a5568;
+    color: white;
+  }
+}

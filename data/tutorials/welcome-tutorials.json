@@ -1,0 +1,222 @@
+{
+  "welcomeTutorials": [
+    {
+      "id": "welcome-to-cql",
+      "title": "Welcome to CQL",
+      "description": "Your first introduction to Clinical Quality Language with hands-on examples",
+      "difficulty": "beginner",
+      "category": "basics",
+      "estimatedTime": 10,
+      "type": "guided",
+      "featured": true,
+      "tags": ["beginner", "introduction", "basics"],
+      "learningObjectives": [
+        "Understand what CQL is and why it's important",
+        "Learn basic CQL syntax and structure",
+        "Create your first CQL library and definitions",
+        "Execute simple CQL expressions"
+      ],
+      "steps": [
+        {
+          "id": "step-1",
+          "title": "What is CQL?",
+          "description": "Learn about Clinical Quality Language and its role in healthcare",
+          "type": "concept",
+          "instructions": "<h5>Welcome to Clinical Quality Language (CQL)!</h5><p>CQL is a high-level, domain-specific language focused on clinical quality applications. It's designed to be:</p><ul><li><strong>Readable:</strong> Written in a way that clinicians can understand</li><li><strong>Precise:</strong> Mathematically rigorous for accurate clinical calculations</li><li><strong>Interoperable:</strong> Works with FHIR and other healthcare data standards</li></ul><p>CQL is used for quality measures, clinical decision support, and population health reporting.</p>",
+          "expectedOutcome": "Understanding of CQL's purpose and key characteristics"
+        },
+        {
+          "id": "step-2", 
+          "title": "Your First CQL Library",
+          "description": "Create a basic CQL library structure",
+          "type": "practice",
+          "instructions": "<p>Every CQL file starts with a <strong>library</strong> declaration. This gives your code a name and helps organize related definitions.</p><p><strong>Try it:</strong> Create a library called 'MyFirstLibrary'</p>",
+          "code": "// Type your library declaration here\n",
+          "codeSection": {
+            "editable": true,
+            "language": "cql"
+          },
+          "validation": {
+            "required": true,
+            "type": "code",
+            "criteria": "library MyFirstLibrary",
+            "successMessage": "Perfect! You've created your first CQL library.",
+            "failureMessage": "Make sure to include 'library MyFirstLibrary' at the top."
+          },
+          "expectedOutcome": "A library declaration that compiles successfully"
+        },
+        {
+          "id": "step-3",
+          "title": "Defining Simple Values", 
+          "description": "Learn to create definitions with simple values",
+          "type": "practice",
+          "instructions": "<p>In CQL, you create named expressions using the <strong>define</strong> keyword. This is how you store values and calculations.</p><p><strong>Try it:</strong> Define a patient's name and age.</p>",
+          "code": "library MyFirstLibrary\n\n// Define a patient's name\ndefine \"PatientName\": 'John Doe'\n\n// Define a patient's age\n",
+          "codeSection": {
+            "editable": true,
+            "language": "cql"
+          },
+          "validation": {
+            "required": true,
+            "type": "code", 
+            "criteria": "define.*Age.*:",
+            "successMessage": "Great! You're defining values like a pro.",
+            "failureMessage": "Add a definition for the patient's age using 'define \"PatientAge\": 25'"
+          },
+          "expectedOutcome": "Two definitions: one for name (string) and one for age (number)"
+        },
+        {
+          "id": "step-4",
+          "title": "Simple Calculations",
+          "description": "Perform basic mathematical operations",
+          "type": "practice", 
+          "instructions": "<p>CQL supports mathematical operations for clinical calculations. Let's calculate a patient's maximum heart rate.</p><p><strong>Formula:</strong> Maximum heart rate = 220 - age</p>",
+          "code": "library MyFirstLibrary\n\ndefine \"PatientAge\": 35\n\n// Calculate maximum heart rate\ndefine \"MaxHeartRate\": \n",
+          "codeSection": {
+            "editable": true,
+            "language": "cql"
+          },
+          "validation": {
+            "required": true,
+            "type": "code",
+            "criteria": "220.*-.*PatientAge|PatientAge.*-.*220",
+            "successMessage": "Excellent! You've performed your first CQL calculation.",
+            "failureMessage": "Use the formula: 220 - PatientAge"
+          },
+          "expectedOutcome": "A calculated maximum heart rate based on age"
+        },
+        {
+          "id": "step-5",
+          "title": "Boolean Logic",
+          "description": "Work with true/false values and comparisons",
+          "type": "practice",
+          "instructions": "<p>Boolean expressions return true or false. They're essential for clinical decision-making.</p><p><strong>Try it:</strong> Determine if the patient has a high heart rate (>100 BPM).</p>",
+          "code": "library MyFirstLibrary\n\ndefine \"CurrentHeartRate\": 110\n\n// Is the heart rate high?\ndefine \"HasHighHeartRate\": \n",
+          "codeSection": {
+            "editable": true,
+            "language": "cql"
+          },
+          "validation": {
+            "required": true,
+            "type": "code",
+            "criteria": "CurrentHeartRate.*>.*100|100.*<.*CurrentHeartRate",
+            "successMessage": "Perfect! Boolean logic is key to clinical rules.",
+            "failureMessage": "Compare CurrentHeartRate to 100 using the > operator"
+          },
+          "expectedOutcome": "A boolean expression that evaluates to true or false"
+        },
+        {
+          "id": "step-6",
+          "title": "Congratulations!",
+          "description": "You've completed your first CQL tutorial",
+          "type": "concept",
+          "instructions": "<h5>🎉 Congratulations!</h5><p>You've successfully learned the fundamentals of CQL:</p><ul><li>✅ Library declarations</li><li>✅ Simple definitions</li><li>✅ Mathematical calculations</li><li>✅ Boolean logic</li></ul><h6>What's Next?</h6><p>Ready to continue your CQL journey? Here are some recommended next steps:</p><ul><li><strong>Working with Dates:</strong> Learn temporal operations</li><li><strong>Clinical Data:</strong> Work with FHIR resources</li><li><strong>Quality Measures:</strong> Build real clinical logic</li></ul>",
+          "expectedOutcome": "Understanding of basic CQL concepts and confidence to continue learning"
+        }
+      ]
+    },
+    {
+      "id": "cql-for-clinicians", 
+      "title": "CQL for Healthcare Professionals",
+      "description": "Learn CQL from a clinical perspective with healthcare-focused examples",
+      "difficulty": "beginner",
+      "category": "clinical",
+      "estimatedTime": 15,
+      "type": "guided",
+      "tags": ["clinician", "healthcare", "medical"],
+      "learningObjectives": [
+        "Understand how CQL applies to clinical workflows",
+        "Learn to express clinical logic in code",
+        "Work with healthcare-specific data types",
+        "Create simple clinical decision support rules"
+      ],
+      "steps": [
+        {
+          "id": "step-1",
+          "title": "CQL in Clinical Practice",
+          "description": "See how CQL bridges clinical knowledge and technology",
+          "type": "concept",
+          "instructions": "<h5>CQL: Clinical Knowledge as Code</h5><p>As a healthcare professional, you already understand clinical logic:</p><ul><li>\"If blood pressure > 140/90, consider hypertension\"</li><li>\"Patients over 65 need annual flu vaccines\"</li><li>\"Diabetic patients should have HbA1c checked every 6 months\"</li></ul><p>CQL lets you express this same logic as precise, executable code that computers can understand and apply consistently across thousands of patients.</p>",
+          "expectedOutcome": "Understanding of how clinical knowledge translates to CQL"
+        },
+        {
+          "id": "step-2",
+          "title": "Patient Vital Signs",
+          "description": "Work with common clinical measurements",
+          "type": "practice",
+          "instructions": "<p>Let's start with something familiar - vital signs. We'll define normal ranges and check if values are within normal limits.</p>",
+          "code": "library ClinicalBasics\n\n// Patient vital signs\ndefine \"SystolicBP\": 145\ndefine \"DiastolicBP\": 90\ndefine \"HeartRate\": 72\ndefine \"Temperature\": 98.6\n\n// Normal ranges (as you know them clinically)\ndefine \"HypertensiveRange\": SystolicBP >= 140 or DiastolicBP >= 90\n",
+          "codeSection": {
+            "editable": true,
+            "language": "cql"
+          },
+          "validation": {
+            "required": true,
+            "type": "code",
+            "successMessage": "Great! You're thinking like a clinical informaticist.",
+            "failureMessage": "The code looks good as written - click Run to see the results."
+          },
+          "expectedOutcome": "Understanding how to represent vital signs and ranges in CQL"
+        },
+        {
+          "id": "step-3", 
+          "title": "Age-Based Clinical Rules",
+          "description": "Create age-appropriate clinical logic",
+          "type": "practice",
+          "instructions": "<p>Many clinical guidelines are age-based. Let's create logic for screening recommendations.</p><p><strong>Clinical Rule:</strong> Women aged 50-74 should receive mammography screening every 2 years.</p>",
+          "code": "library ClinicalBasics\n\ndefine \"PatientAge\": 62\ndefine \"PatientGender\": 'female'\n\n// Mammography screening eligibility\ndefine \"EligibleForMammography\": \n  PatientGender = 'female' \n  and PatientAge >= 50 \n  and PatientAge <= 74\n",
+          "codeSection": {
+            "editable": true, 
+            "language": "cql"
+          },
+          "validation": {
+            "required": true,
+            "type": "code",
+            "successMessage": "Perfect! You're encoding evidence-based guidelines.",
+            "failureMessage": "The logic correctly implements the screening guideline."
+          },
+          "expectedOutcome": "A boolean expression that determines screening eligibility"
+        }
+      ]
+    },
+    {
+      "id": "cql-for-developers",
+      "title": "CQL for Developers", 
+      "description": "Learn CQL from a programming perspective with technical examples",
+      "difficulty": "beginner",
+      "category": "technical",
+      "estimatedTime": 12,
+      "type": "guided",
+      "tags": ["developer", "programming", "technical"],
+      "learningObjectives": [
+        "Understand CQL syntax and language constructs",
+        "Learn how CQL differs from other programming languages",
+        "Work with healthcare data types and structures",
+        "Integrate CQL with healthcare APIs and systems"
+      ],
+      "steps": [
+        {
+          "id": "step-1",
+          "title": "CQL Language Overview",
+          "description": "CQL from a programmer's perspective", 
+          "type": "concept",
+          "instructions": "<h5>CQL: A Domain-Specific Language</h5><p>As a developer, you'll find CQL similar to SQL but designed for clinical logic:</p><ul><li><strong>Declarative:</strong> Express what you want, not how to compute it</li><li><strong>Strongly Typed:</strong> Rich type system for healthcare data</li><li><strong>Temporal-Aware:</strong> Built-in support for dates, times, and intervals</li><li><strong>Standards-Based:</strong> Integrates with FHIR, QDM, and other healthcare standards</li></ul><p>CQL compiles to Expression Logical Model (ELM) for execution.</p>",
+          "expectedOutcome": "Understanding of CQL's technical characteristics"
+        },
+        {
+          "id": "step-2",
+          "title": "Data Types and Type System",
+          "description": "Explore CQL's rich type system",
+          "type": "practice", 
+          "instructions": "<p>CQL has both primitive and complex types. Let's explore the type system:</p>",
+          "code": "library DeveloperBasics\n\n// Primitive types\ndefine \"IntegerValue\": 42\ndefine \"DecimalValue\": 98.6\ndefine \"StringValue\": 'Hello CQL'\ndefine \"BooleanValue\": true\ndefine \"DateValue\": @2023-12-15\ndefine \"DateTimeValue\": @2023-12-15T10:30:00.000\n\n// Type coercion and conversion\ndefine \"ImplicitConversion\": IntegerValue + DecimalValue\ndefine \"ExplicitConversion\": ToString(IntegerValue)\n",
+          "codeSection": {
+            "editable": true,
+            "language": "cql"
+          },
+          "expectedOutcome": "Understanding of CQL's type system and conversions"
+        }
+      ]
+    }
+  ]
+}

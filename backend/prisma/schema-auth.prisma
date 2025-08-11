@@ -1,0 +1,224 @@
+// Authentication and User Management Schema
+// This extends the main Prisma schema with authentication models
+
+model User {
+  id                        String   @id @default(cuid())
+  email                     String   @unique
+  password                  String?  // Nullable for OAuth-only accounts
+  firstName                 String
+  lastName                  String
+  avatar                    String?
+  bio                       String?
+  organization              String?
+  role                      UserRole @default(LEARNER)
+  
+  // Authentication fields
+  emailVerified             Boolean  @default(false)
+  emailVerificationToken    String?
+  passwordResetToken        String?
+  passwordResetExpires      DateTime?
+  passwordChangedAt         DateTime?
+  
+  // OAuth provider IDs
+  googleId                  String?
+  githubId                  String?
+  microsoftId               String?
+  
+  // Account status
+  isActive                  Boolean  @default(true)
+  subscribeNewsletter       Boolean  @default(false)
+  timezone                  String   @default("UTC")
+  locale                    String   @default("en")
+  
+  // Tracking fields
+  createdAt                 DateTime @default(now())
+  updatedAt                 DateTime @updatedAt
+  lastLoginAt               DateTime?
+  loginCount                Int      @default(0)
+  
+  // Relationships
+  refreshTokens             RefreshToken[]
+  userSessions              UserSession[]
+  loginAttempts             LoginAttempt[]
+  auditLogs                 AuditLog[]
+  
+  // Exercise and Tutorial relationships
+  exercises                 Exercise[]          @relation("ExerciseAuthor")
+  exerciseSubmissions       ExerciseSubmission[]
+  hints                     Hint[]             @relation("HintRecipient")
+  hintAnalytics             HintAnalytics[]
+  
+  // Tutorial relationships
+  tutorials                 Tutorial[]         @relation("TutorialAuthor")
+  tutorialProgresses        TutorialProgress[]
+  tutorialCompletions       TutorialCompletion[]
+  tutorialEvents            TutorialEvent[]
+  tutorialRatings           TutorialRating[]
+  
+  @@map("users")
+}
+
+model RefreshToken {
+  id          String   @id @default(cuid())
+  token       String   @unique
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt   DateTime
+  createdAt   DateTime @default(now())
+  lastUsedAt  DateTime?
+  isActive    Boolean  @default(true)
+  revokedAt   DateTime?
+  userAgent   String?
+  ipAddress   String?
+  
+  @@map("refresh_tokens")
+}
+
+model UserSession {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sessionId   String   @unique
+  expiresAt   DateTime
+  createdAt   DateTime @default(now())
+  lastActivity DateTime @default(now())
+  isActive    Boolean  @default(true)
+  userAgent   String?
+  ipAddress   String?
+  location    String?
+  
+  @@map("user_sessions")
+}
+
+model LoginAttempt {
+  id          String   @id @default(cuid())
+  userId      String?
+  user        User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  email       String
+  ipAddress   String
+  userAgent   String?
+  success     Boolean
+  failureReason String?
+  createdAt   DateTime @default(now())
+  
+  @@map("login_attempts")
+}
+
+model AuditLog {
+  id          String   @id @default(cuid())
+  userId      String?
+  user        User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  action      String
+  resource    String?
+  resourceId  String?
+  oldValues   Json?
+  newValues   Json?
+  ipAddress   String?
+  userAgent   String?
+  createdAt   DateTime @default(now())
+  
+  @@map("audit_logs")
+}
+
+model EmailVerification {
+  id          String   @id @default(cuid())
+  email       String
+  token       String   @unique
+  expiresAt   DateTime
+  createdAt   DateTime @default(now())
+  verifiedAt  DateTime?
+  
+  @@map("email_verifications")
+}
+
+model PasswordResetRequest {
+  id          String   @id @default(cuid())
+  email       String
+  token       String   @unique
+  expiresAt   DateTime
+  createdAt   DateTime @default(now())
+  usedAt      DateTime?
+  ipAddress   String?
+  
+  @@map("password_reset_requests")
+}
+
+model UserPreferences {
+  id                    String   @id @default(cuid())
+  userId                String   @unique
+  theme                 String   @default("light")
+  language              String   @default("en")
+  notifications         Json     @default("{}")
+  editorSettings        Json     @default("{}")
+  dashboardLayout       Json     @default("{}")
+  privacySettings       Json     @default("{}")
+  updatedAt             DateTime @updatedAt
+  
+  @@map("user_preferences")
+}
+
+model UserSubscription {
+  id                String        @id @default(cuid())
+  userId            String        @unique
+  plan              SubscriptionPlan @default(FREE)
+  status            SubscriptionStatus @default(ACTIVE)
+  startDate         DateTime      @default(now())
+  endDate           DateTime?
+  canceledAt        DateTime?
+  stripeCustomerId  String?
+  stripeSubscriptionId String?
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+  
+  @@map("user_subscriptions")
+}
+
+model ApiKey {
+  id          String   @id @default(cuid())
+  userId      String
+  name        String
+  keyHash     String   @unique
+  permissions Json     @default("[]")
+  expiresAt   DateTime?
+  lastUsedAt  DateTime?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  
+  @@map("api_keys")
+}
+
+// Enums
+enum UserRole {
+  LEARNER
+  INSTRUCTOR
+  DEVELOPER
+  RESEARCHER
+  ADMIN
+  
+  @@map("user_role")
+}
+
+enum SubscriptionPlan {
+  FREE
+  BASIC
+  PREMIUM
+  ENTERPRISE
+  
+  @@map("subscription_plan")
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  CANCELED
+  EXPIRED
+  SUSPENDED
+  
+  @@map("subscription_status")
+}
+
+// Indexes for performance
+@@index([email])
+@@index([role])
+@@index([isActive])
+@@index([createdAt])
+@@index([lastLoginAt])
